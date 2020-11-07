@@ -24,6 +24,7 @@ namespace TaskManager
         private void button1_Click(object sender, EventArgs e)
         {
             label2.Text = "";
+            label3.Text = "";
             Process[] processes = Process.GetProcesses();
             textBox1.Text = String.Format("{0, -25} | {1, -10} | {2, -30} |\r\n", "NAME", "PID", "MAINWINDOW TITLE");
             foreach (Process p in processes)
@@ -82,12 +83,18 @@ namespace TaskManager
                 if(ExistProcess(ref p) && p != null)
                 {
                     try{
-                        p.Close();
+                        if (p.CloseMainWindow()) {
+                            label3.Text = "Process closes correctly";
+                        }
+                        else
+                        {
+                            label2.Text = "Process could not be closed. It does not have a main window or the main window is disabled";
+                        }
                     }
                     catch (Win32Exception)
                     {
                         label2.Text = "This process can not be closed";
-                    }
+                    }                    
                 }
                 else
                 {
@@ -106,6 +113,7 @@ namespace TaskManager
                 {
                     try{
                         p.Kill();
+                        label3.Text = "Process killed correctly";
                     }
                     catch (Win32Exception)
                     {
@@ -122,9 +130,10 @@ namespace TaskManager
 
         private void button5_Click(object sender, EventArgs e)
         {
-            if(textBox2.TextLength > 0)
-            {
-                label2.Text = "";
+            label2.Text = "";
+            label3.Text = "";
+            if (textBox2.TextLength > 0)
+            {                
                 try
                 {
                     Process p = Process.Start(textBox2.Text);
@@ -169,6 +178,7 @@ namespace TaskManager
 
         private bool ComprobarPID(string tb)
         {
+            label3.Text = "";
             try
             {
                 if (tb.Length == 0)
