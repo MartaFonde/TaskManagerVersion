@@ -62,7 +62,7 @@ namespace TaskManager
                                 m.FileName.Length > 50 ? m.FileName.Substring(0, 47) + "..." : m.FileName);
                         }
                     }
-                    catch (Exception)
+                    catch (Win32Exception)
                     {
                         label2.Text = "Access denied";
                     }                                                                       
@@ -84,7 +84,7 @@ namespace TaskManager
                 {
                     try{
                         if (p.CloseMainWindow()) {
-                            label3.Text = "Process closes correctly";
+                            label3.Text = "Closure request has been sent";
                         }
                         else
                         {
